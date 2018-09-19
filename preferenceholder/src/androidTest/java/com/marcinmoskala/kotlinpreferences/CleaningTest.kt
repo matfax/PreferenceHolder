@@ -6,7 +6,6 @@ import com.marcinmoskala.kotlinpreferences.TestPreferences.experience
 import com.marcinmoskala.kotlinpreferences.TestPreferences.isMonsterKiller
 import com.marcinmoskala.kotlinpreferences.TestPreferences.monstersKilled
 import com.marcinmoskala.kotlinpreferences.TestPreferences.numberOfHahaInLough
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,7 +44,7 @@ class CleaningTest: BaseTest() {
     }
 
     @Test
-    fun cleaningIsOnlyApplyedToSinglePrefClass() {
+    fun cleaningIsOnlyAppliedToSinglePrefClass() {
         TestPreferences.isMonsterKiller = false
         TestPreferences.monstersKilled = 1000
         assertEquals(false, isMonsterKiller)

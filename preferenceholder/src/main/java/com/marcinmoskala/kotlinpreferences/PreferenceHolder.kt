@@ -55,7 +55,7 @@ abstract class PreferenceHolder {
         for (p in properties) {
             val prevAccessible = p.isAccessible
             if (!prevAccessible) p.isAccessible = true
-            val delegate = p.getDelegate(preferences)
+            val delegate = p.getDelegate(preferences!!)
             if (delegate is Clearable) f(delegate, p)
             p.isAccessible = prevAccessible
         }
@@ -107,22 +107,22 @@ abstract class PreferenceHolder {
          */
         @Throws(Exception::class)
         fun getPreferences(): SharedPreferences {
-            if (!::preferences.isInitialized) {
+            if (!isInitialized()) {
                 throw Exception(NOT_INITIALIZED)
             }
-            return preferences
+            return preferences!!
         }
 
         /**
          * Whether the wrapped SharedPreferences are initialized.
          */
         fun isInitialized(): Boolean {
-            return ::preferences.isInitialized
+            return preferences != null
         }
 
         private const val NOT_INITIALIZED = "No preferences in PreferenceHolder instance. Add in Application class PreferenceHolder.setContext(applicationContext) or make PreferenceHolderApplication to be your project application class (android:name field in AndroidManifest)."
 
         @Volatile
-        private lateinit var preferences: SharedPreferences
+        private var preferences: SharedPreferences? = null
     }
 }
