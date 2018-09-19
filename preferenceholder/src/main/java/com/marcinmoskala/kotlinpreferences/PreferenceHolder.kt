@@ -3,7 +3,11 @@ package com.marcinmoskala.kotlinpreferences
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.marcinmoskala.kotlinpreferences.bindings.*
+import com.marcinmoskala.kotlinpreferences.bindings.Clearable
+import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinder
+import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinderCaching
+import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinderNullable
+import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinderNullableCaching
 import java.lang.reflect.Type
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KClass
@@ -37,19 +41,21 @@ abstract class PreferenceHolder {
     }
 
     fun clearCache() {
-        forEachDelegate { delegate, property ->
+        forEachDelegate { delegate, _ ->
             delegate.clearCache()
         }
     }
 
     private fun forEachDelegate(f: (Clearable, KProperty<*>) -> Unit) {
-        val pref = preferences ?: return
+        if (!isInitialized()) {
+            return
+        }
         val properties = this::class.declaredMemberProperties
                 .filterIsInstance<KProperty1<SharedPreferences, *>>()
         for (p in properties) {
             val prevAccessible = p.isAccessible
             if (!prevAccessible) p.isAccessible = true
-            val delegate = p.getDelegate(pref)
+            val delegate = p.getDelegate(preferences)
             if (delegate is Clearable) f(delegate, p)
             p.isAccessible = prevAccessible
         }
@@ -83,16 +89,40 @@ abstract class PreferenceHolder {
 
         /**
          *  It should be used to set ApplicationContext on project Application class. Only case when
-         *  it could be ommitted is when testingMode is turned on.
+         *  it could be committed is when testingMode is turned on.
          */
         fun setContext(context: Context) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context)
         }
 
-        private const val noPreferencesSetErrorText = "No preferences in PreferenceHolder instance. Add in Application class PreferenceHolder.setContext(applicationContext) or make PreferenceHolderApplication to be your project application class (android:name field in AndroidManifest)."
+        /**
+         *  Integrate your own custom-built SharedPreferences object into the PreferenceHolder.
+         */
+        fun setPreferences(shared: SharedPreferences) {
+            preferences = shared
+        }
 
-        internal var preferences: SharedPreferences? = null
+        /**
+         *  Get the SharedPreference singleton or throw an error if it is uninitialized.
+         */
+        @Throws(Exception::class)
+        fun getPreferences(): SharedPreferences {
+            if (!::preferences.isInitialized) {
+                throw Exception(NOT_INITIALIZED)
+            }
+            return preferences
+        }
 
-        internal fun getPreferencesOrThrowError(): SharedPreferences = PreferenceHolder.preferences ?: throw Error(noPreferencesSetErrorText)
+        /**
+         * Whether the wrapped SharedPreferences are initialized.
+         */
+        fun isInitialized(): Boolean {
+            return ::preferences.isInitialized
+        }
+
+        private const val NOT_INITIALIZED = "No preferences in PreferenceHolder instance. Add in Application class PreferenceHolder.setContext(applicationContext) or make PreferenceHolderApplication to be your project application class (android:name field in AndroidManifest)."
+
+        @Volatile
+        private lateinit var preferences: SharedPreferences
     }
 }

@@ -2,7 +2,7 @@ package com.marcinmoskala.kotlinpreferences.bindings
 
 import android.content.SharedPreferences
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
-import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.getPreferencesOrThrowError
+import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.getPreferences
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.testingMode
 import java.lang.reflect.Type
 import kotlin.properties.ReadWriteProperty
@@ -38,12 +38,12 @@ internal class PreferenceFieldBinderCaching<T : Any>(
     }
 
     private fun saveNewValue(property: KProperty<*>, value: T) {
-        val pref = getPreferencesOrThrowError()
+        val pref = getPreferences()
         pref.edit().apply { putValue(clazz, value, getKey(key, property)) }.apply()
     }
 
     private fun readValue(property: KProperty<*>): T {
-        val pref = getPreferencesOrThrowError()
+        val pref = getPreferences()
         return pref.getValue(property)
     }
 

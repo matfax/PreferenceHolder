@@ -1,7 +1,7 @@
 package com.marcinmoskala.kotlinpreferences.bindings
 
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
-import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.getPreferencesOrThrowError
+import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.getPreferences
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.testingMode
 import java.lang.reflect.Type
 import kotlin.concurrent.thread
@@ -60,20 +60,20 @@ internal class PreferenceFieldBinderNullableCaching<T : Any>(
 
     private fun readValue(property: KProperty<*>): T? {
         val key = getKey(key, property)
-        val pref = getPreferencesOrThrowError()
+        val pref = getPreferences()
         if (!pref.contains(key)) return null
         return pref.getFromPreference(clazz, type, key)
     }
 
     private fun removeValue(property: KProperty<*>) {
-        val pref = getPreferencesOrThrowError()
+        val pref = getPreferences()
         pref.edit()
                 .remove(getKey(key, property))
                 .apply()
     }
 
     private fun saveValue(property: KProperty<*>, value: T) {
-        val pref = getPreferencesOrThrowError()
+        val pref = getPreferences()
         pref.edit().apply { putValue(clazz, value, getKey(key, property)) }.apply()
     }
 }
