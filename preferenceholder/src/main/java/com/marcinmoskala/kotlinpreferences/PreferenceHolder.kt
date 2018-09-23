@@ -18,30 +18,88 @@ import kotlin.reflect.jvm.isAccessible
 
 abstract class PreferenceHolder {
 
-    protected inline fun <reified T : Any> bindToPreferenceField(default: T, key: String? = null, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T>
-            = bindToPreferenceField(T::class, object : TypeToken<T>() {}.type, default, key, caching)
+    protected inline fun <reified T : Any> bindToPreferenceField(
+            default: T,
+            key: String? = null,
+            caching: Boolean = true
+    ): ReadWriteProperty<PreferenceHolder, T> = bindToPreferenceField(
+            T::class,
+            object : TypeToken<T>() {}.type,
+            default,
+            key,
+            caching
+    )
 
-    protected inline fun <reified T : Any> bindToPreferenceFieldNullable(key: String? = null, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T?>
-            = bindToPreferenceFieldNullable(T::class, object : TypeToken<T>() {}.type, key, caching)
+    protected inline fun <reified T : Any> bindToPreferenceFieldNullable(
+            key: String? = null,
+            caching: Boolean = true
+    ): ReadWriteProperty<PreferenceHolder, T?> = bindToPreferenceFieldNullable(
+            T::class,
+            object : TypeToken<T>() {}.type,
+            key,
+            caching
+    )
 
-    protected fun <T : Any> bindToPreferenceField(clazz: KClass<T>, type: Type, default: T, key: String?, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T> = if (caching) PreferenceFieldBinderCaching(clazz, type, default, key, ::getKey) else PreferenceFieldBinder(clazz, type, default, key, ::getKey)
+    protected fun <T : Any> bindToPreferenceField(
+            clazz: KClass<T>,
+            type: Type,
+            default: T,
+            key: String?,
+            caching: Boolean = true
+    ): ReadWriteProperty<PreferenceHolder, T> = if (caching) PreferenceFieldBinderCaching(
+            clazz,
+            type,
+            default,
+            key,
+            ::getKeyFromProperty
+    ) else PreferenceFieldBinder(
+            clazz,
+            type,
+            default,
+            key,
+            ::getKeyFromProperty
+    )
 
-    protected fun <T : Any> bindToPreferenceFieldNullable(clazz: KClass<T>, type: Type, key: String?, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T?> = if (caching) PreferenceFieldBinderNullableCaching(clazz, type, key, ::getKey) else PreferenceFieldBinderNullable(clazz, type, key, ::getKey)
+    protected fun <T : Any> bindToPreferenceFieldNullable(
+            clazz: KClass<T>,
+            type: Type,
+            key: String?,
+            caching: Boolean = true
+    ): ReadWriteProperty<PreferenceHolder, T?> = if (caching) PreferenceFieldBinderNullableCaching(
+            clazz,
+            type,
+            key,
+            ::getKeyFromProperty
+    ) else PreferenceFieldBinderNullable(
+            clazz,
+            type,
+            key,
+            ::getKeyFromProperty
+    )
 
     /**
      * Determines the key name of the preference property.
      * @param key the key provided in the bind methods, otherwise null
      * @param property the property holder for the preference to process
      */
-    open fun getKey(key: String?, property: KProperty<*>): String {
+    private fun getKeyFromProperty(key: String?, property: KProperty<*>): String {
+        return getKey(key, property.name.capitalize())
+    }
+
+    /**
+     * Determines the key name of the preference property.
+     * @param key the key provided in the bind methods, otherwise null
+     * @param propertyName the name of the property holder for the preference to process
+     */
+    open fun getKey(key: String?, propertyName: String?): String {
         return key ?: "${this::class.simpleName
-                ?: this.javaClass.enclosingClass?.simpleName}${property.name.capitalize()}".toSnakeCase()
+                ?: this.javaClass.enclosingClass?.simpleName}$propertyName".toSnakeCase()
     }
 
     /**
      * Converts a camelCase string to snake_case.
      */
-    fun String.toSnakeCase(): String {
+    protected fun String.toSnakeCase(): String {
         var text: String = ""
         var isFirst = true
         this.forEach {
