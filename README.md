@@ -85,7 +85,7 @@ To add PreferenceHolder to the project, add to build.gradle file:
 
 ```groovy
 dependencies {
-    compile "com.marcinmoskala.PreferenceHolder:preferenceholder:1.51"
+    implementation 'com.github.matfax:PreferenceHolder:1.52-beta.6'
 }
 ```
 
@@ -103,7 +103,7 @@ To use Gson serializer, we need to add following dependency:
 
 ```groovy
 dependencies {
-    compile "com.marcinmoskala.PreferenceHolder:preferenceholder-gson-serializer:1.51"
+    implementation "com.github.matfax:PreferenceHolder:preferenceholder-gson-serializer:1.52-beta.6"
 }
 ```
 
