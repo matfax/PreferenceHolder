@@ -24,11 +24,18 @@ abstract class PreferenceHolder {
     protected inline fun <reified T : Any> bindToPreferenceFieldNullable(key: String? = null, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T?>
             = bindToPreferenceFieldNullable(T::class, object : TypeToken<T>() {}.type, key, caching)
 
-    protected fun <T : Any> bindToPreferenceField(clazz: KClass<T>, type: Type, default: T, key: String?, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T>
-            = if (caching) PreferenceFieldBinderCaching(clazz, type, default, key) else PreferenceFieldBinder(clazz, type, default, key)
+    protected fun <T : Any> bindToPreferenceField(clazz: KClass<T>, type: Type, default: T, key: String?, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T> = if (caching) PreferenceFieldBinderCaching(clazz, type, default, key, ::getKey) else PreferenceFieldBinder(clazz, type, default, key, ::getKey)
 
-    protected fun <T : Any> bindToPreferenceFieldNullable(clazz: KClass<T>, type: Type, key: String?, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T?>
-            = if (caching) PreferenceFieldBinderNullableCaching(clazz, type, key) else PreferenceFieldBinderNullable(clazz, type, key)
+    protected fun <T : Any> bindToPreferenceFieldNullable(clazz: KClass<T>, type: Type, key: String?, caching: Boolean = true): ReadWriteProperty<PreferenceHolder, T?> = if (caching) PreferenceFieldBinderNullableCaching(clazz, type, key, ::getKey) else PreferenceFieldBinderNullable(clazz, type, key, ::getKey)
+
+    /**
+     * Determines the key name of the preference property.
+     * @param key the key provided in the bind methods, otherwise null
+     * @param property the property holder for the preference to process
+     */
+    open fun getKey(key: String?, property: KProperty<*>): String {
+        return key ?: "${property.javaClass.simpleName}${property.name.capitalize()}"
+    }
 
     /**
      *  Function used to clear all SharedPreference and PreferenceHolder data. Useful especially

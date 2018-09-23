@@ -11,7 +11,8 @@ import kotlin.reflect.KProperty
 internal class PreferenceFieldBinderNullable<T : Any>(
         private val clazz: KClass<T>,
         private val type: Type,
-        private val key: String?
+        private val key: String?,
+        private val getKey: (key: String?, property: KProperty<*>) -> String
 ) : ReadWriteProperty<PreferenceHolder, T?>, Clearable {
 
     override fun clear(thisRef: PreferenceHolder, property: KProperty<*>) {

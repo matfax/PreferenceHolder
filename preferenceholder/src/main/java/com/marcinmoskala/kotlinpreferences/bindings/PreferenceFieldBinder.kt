@@ -13,7 +13,8 @@ internal class PreferenceFieldBinder<T : Any>(
         private val clazz: KClass<T>,
         private val type: Type,
         private val default: T,
-        private val key: String?
+        private val key: String?,
+        private val getKey: (key: String?, property: KProperty<*>) -> String
 ) : ReadWriteProperty<PreferenceHolder, T>, Clearable {
 
     override fun clear(thisRef: PreferenceHolder, property: KProperty<*>) {
