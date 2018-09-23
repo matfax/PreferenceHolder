@@ -34,8 +34,27 @@ abstract class PreferenceHolder {
      * @param property the property holder for the preference to process
      */
     open fun getKey(key: String?, property: KProperty<*>): String {
-        return key ?: "${property.javaClass.simpleName}${property.name.capitalize()}"
+        return key ?: "${this::class.simpleName}${property.name.capitalize()}".toSnakeCase()
     }
+
+    /**
+     * Converts a camelCase string to snake_case.
+     */
+    fun String.toSnakeCase(): String {
+        var text: String = ""
+        var isFirst = true
+        this.forEach {
+            if (it.isUpperCase()) {
+                if (isFirst) isFirst = false
+                else text += "_"
+                text += it.toLowerCase()
+            } else {
+                text += it
+            }
+        }
+        return text
+    }
+
 
     /**
      *  Function used to clear all SharedPreference and PreferenceHolder data. Useful especially
