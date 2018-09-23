@@ -35,7 +35,7 @@ abstract class PreferenceHolder {
      */
     open fun getKey(key: String?, property: KProperty<*>): String {
         return key ?: "${this::class.simpleName
-                ?: this.javaClass.enclosingClass}${property.name.capitalize()}".toSnakeCase()
+                ?: this.javaClass.enclosingClass?.simpleName}${property.name.capitalize()}".toSnakeCase()
     }
 
     /**
