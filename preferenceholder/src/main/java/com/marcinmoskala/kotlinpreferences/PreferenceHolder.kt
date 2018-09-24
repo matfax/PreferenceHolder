@@ -87,7 +87,7 @@ abstract class PreferenceHolder {
      * @param property the property holder for the preference to process
      */
     private fun getKeyFromProperty(key: String?, property: KProperty<*>): String {
-        return key ?: getKey(property.name.capitalize())
+        return key ?: getKey(property.name)
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class PreferenceHolder {
      */
     open fun getKey(propertyName: String?): String {
         return "${this::class.simpleName
-                ?: this.javaClass.enclosingClass?.simpleName}$propertyName".toSnakeCase()
+                ?: this.javaClass.enclosingClass?.simpleName}${propertyName?.capitalize()}".toSnakeCase()
     }
 
     /**
