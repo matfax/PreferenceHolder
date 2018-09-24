@@ -46,36 +46,40 @@ abstract class PreferenceHolder {
             default: T,
             key: String?,
             caching: Boolean = true
-    ): ReadWriteProperty<PreferenceHolder, T> = if (caching) PreferenceFieldBinderCaching(
-            clazz,
-            type,
-            default,
-            key,
-            ::getKeyFromProperty
-    ) else PreferenceFieldBinder(
-            clazz,
-            type,
-            default,
-            key,
-            ::getKeyFromProperty
-    )
+    ): ReadWriteProperty<PreferenceHolder, T> {
+        return if (caching) PreferenceFieldBinderCaching(
+                clazz,
+                type,
+                default,
+                key,
+                ::getKeyFromProperty
+        ) else PreferenceFieldBinder(
+                clazz,
+                type,
+                default,
+                key,
+                ::getKeyFromProperty
+        )
+    }
 
     protected fun <T : Any> bindToPreferenceFieldNullable(
             clazz: KClass<T>,
             type: Type,
             key: String?,
             caching: Boolean = true
-    ): ReadWriteProperty<PreferenceHolder, T?> = if (caching) PreferenceFieldBinderNullableCaching(
-            clazz,
-            type,
-            key,
-            ::getKeyFromProperty
-    ) else PreferenceFieldBinderNullable(
-            clazz,
-            type,
-            key,
-            ::getKeyFromProperty
-    )
+    ): ReadWriteProperty<PreferenceHolder, T?> {
+        return if (caching) PreferenceFieldBinderNullableCaching(
+                clazz,
+                type,
+                key,
+                ::getKeyFromProperty
+        ) else PreferenceFieldBinderNullable(
+                clazz,
+                type,
+                key,
+                ::getKeyFromProperty
+        )
+    }
 
     /**
      * Determines the key name of the preference property.
@@ -83,7 +87,7 @@ abstract class PreferenceHolder {
      * @param property the property holder for the preference to process
      */
     private fun getKeyFromProperty(key: String?, property: KProperty<*>): String {
-        return getKey(key, property.name.capitalize())
+        return key ?: getKey(key, property.name.capitalize())
     }
 
     /**
@@ -92,7 +96,7 @@ abstract class PreferenceHolder {
      * @param propertyName the name of the property holder for the preference to process
      */
     open fun getKey(key: String?, propertyName: String?): String {
-        return key ?: "${this::class.simpleName
+        return "${this::class.simpleName
                 ?: this.javaClass.enclosingClass?.simpleName}$propertyName".toSnakeCase()
     }
 
