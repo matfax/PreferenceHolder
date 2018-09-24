@@ -87,15 +87,14 @@ abstract class PreferenceHolder {
      * @param property the property holder for the preference to process
      */
     private fun getKeyFromProperty(key: String?, property: KProperty<*>): String {
-        return key ?: getKey(key, property.name.capitalize())
+        return key ?: getKey(property.name.capitalize())
     }
 
     /**
      * Determines the key name of the preference property.
-     * @param key the key provided in the bind methods, otherwise null
      * @param propertyName the name of the property holder for the preference to process
      */
-    open fun getKey(key: String?, propertyName: String?): String {
+    open fun getKey(propertyName: String?): String {
         return "${this::class.simpleName
                 ?: this.javaClass.enclosingClass?.simpleName}$propertyName".toSnakeCase()
     }
