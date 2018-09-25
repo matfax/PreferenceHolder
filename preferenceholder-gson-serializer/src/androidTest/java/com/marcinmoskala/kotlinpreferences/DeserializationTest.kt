@@ -1,6 +1,6 @@
 package com.marcinmoskala.kotlinpreferences
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.google.gson.Gson
 import com.marcinmoskala.kotlinpreferences.gson.GsonSerializer
 import org.junit.Assert

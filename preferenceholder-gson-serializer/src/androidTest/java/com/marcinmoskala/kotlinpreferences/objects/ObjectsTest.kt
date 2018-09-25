@@ -1,6 +1,6 @@
 package com.marcinmoskala.kotlinpreferences.objects
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.marcinmoskala.kotlinpreferences.GsonBaseTest
 import com.marcinmoskala.kotlinpreferences.testValues
 import org.junit.Test

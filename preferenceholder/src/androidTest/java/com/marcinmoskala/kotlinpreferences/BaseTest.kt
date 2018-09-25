@@ -1,6 +1,6 @@
 package com.marcinmoskala.kotlinpreferences
 
-import android.support.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry
 
 open class BaseTest {
 

@@ -1,14 +1,16 @@
 package com.marcinmoskala.testapp
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.testapp.TestPreferences.className
 import com.marcinmoskala.testapp.TestPreferences.experience
 import com.marcinmoskala.testapp.TestPreferences.isMonsterKiller
 import com.marcinmoskala.testapp.TestPreferences.monstersKilled
 import com.marcinmoskala.testapp.TestPreferences.numberOfHahaInLough
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 

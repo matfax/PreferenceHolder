@@ -1,6 +1,6 @@
 package com.marcinmoskala.kotlinpreferences
 
-import android.support.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry
 import com.google.gson.Gson
 import com.marcinmoskala.kotlinpreferences.collections.CollectionsPref
 import com.marcinmoskala.kotlinpreferences.gson.GsonSerializer

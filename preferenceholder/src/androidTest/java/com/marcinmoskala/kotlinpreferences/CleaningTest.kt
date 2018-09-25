@@ -1,6 +1,6 @@
 package com.marcinmoskala.kotlinpreferences
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.marcinmoskala.kotlinpreferences.TestPreferences.className
 import com.marcinmoskala.kotlinpreferences.TestPreferences.experience
 import com.marcinmoskala.kotlinpreferences.TestPreferences.isMonsterKiller

@@ -1,10 +1,8 @@
 package com.marcinmoskala.kotlinpreferences.issue2test
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
-import android.util.Log
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.kotlinpreferences.gson.GsonSerializer
 import org.junit.Assert

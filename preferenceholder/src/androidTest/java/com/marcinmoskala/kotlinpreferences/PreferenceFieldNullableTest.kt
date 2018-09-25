@@ -1,11 +1,6 @@
 package com.marcinmoskala.kotlinpreferences
 
-import android.support.test.runner.AndroidJUnit4
-import com.marcinmoskala.kotlinpreferences.TestPreferences.className
-import com.marcinmoskala.kotlinpreferences.TestPreferences.experience
-import com.marcinmoskala.kotlinpreferences.TestPreferences.isMonsterKiller
-import com.marcinmoskala.kotlinpreferences.TestPreferences.monstersKilled
-import com.marcinmoskala.kotlinpreferences.TestPreferences.numberOfHahaInLough
+import androidx.test.runner.AndroidJUnit4
 import org.junit.Test
 import org.junit.runner.RunWith
 

@@ -1,8 +1,12 @@
 package com.marcinmoskala.kotlinpreferences.collections
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.marcinmoskala.kotlinpreferences.GsonBaseTest
-import com.marcinmoskala.kotlinpreferences.collections.Elems.*
+import com.marcinmoskala.kotlinpreferences.collections.Elems.Elem1
+import com.marcinmoskala.kotlinpreferences.collections.Elems.Elem2
+import com.marcinmoskala.kotlinpreferences.collections.Elems.Elem3
+import com.marcinmoskala.kotlinpreferences.collections.Elems.Elem4
+import com.marcinmoskala.kotlinpreferences.collections.Elems.Elem5
 import com.marcinmoskala.kotlinpreferences.objects.Character
 import com.marcinmoskala.kotlinpreferences.testValues
 import org.junit.Test
