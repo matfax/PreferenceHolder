@@ -7,9 +7,9 @@ android:
     - platform-tools
     - build-tools-28.0.2
     - android-28
-    - android-22
+    - android-25
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-25
 
 jdk:
   - oraclejdk8
@@ -17,7 +17,8 @@ jdk:
 sudo: true
 
 before_script:
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - android list targets
+  - echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - sleep 10
