@@ -6,6 +6,8 @@ Kotlin Android Library, that makes preference usage simple and fun.
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/103fbbf09fc04511a12e237e3c51b1d4)](https://www.codacy.com/app/matfax/PreferenceHolder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=matfax/PreferenceHolder&amp;utm_campaign=Badge_Grade)
 ![GitHub License](https://img.shields.io/github/license/matfax/PreferenceHolder.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/matfax/PreferenceHolder.svg)
+![Libraries.io for GitHub](https://img.shields.io/librariesio/github/matfax/PreferenceHolder.svg)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=matfax/PreferenceHolder)](https://dependabot.com)
 
 To stay up-to-date with news about library [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40marcinmoskala)](https://twitter.com/marcinmoskala?ref_src=twsrc%5Etfw)
 
