@@ -24,12 +24,13 @@ android:
 
 env:
   matrix:
-    - TEST=:preferenceholder:connectedDebugAndroidTest
-    - TEST=:preferenceholder-gson-serializer:connectedDebugAndroidTest
+    - JOB=:preferenceholder:connectedDebugAndroidTest
+    - JOB=:preferenceholder-gson-serializer:connectedDebugAndroidTest
+    - JOB="build --scan"
+    
 
 script:
-  - ./gradlew build --scan
-  - ./gradlew $TEST -i
+  - ./gradlew $JOB -i
 
 branches:
   only:
