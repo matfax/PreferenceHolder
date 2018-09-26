@@ -23,7 +23,7 @@ android:
     - addon-google_apis-google-$ANDROID_API_LEVEL
 
 before_script:
-  - echo yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
+  - echo yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL"
 
 env:
   matrix:
