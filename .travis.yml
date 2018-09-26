@@ -22,6 +22,9 @@ android:
     - extra-android-m2repository
     - addon-google_apis-google-$ANDROID_API_LEVEL
 
+before_script:
+  - yes | sudo sdkmanager --licenses
+
 env:
   matrix:
     - JOB=:preferenceholder:connectedDebugAndroidTest
