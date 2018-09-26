@@ -3,13 +3,17 @@ buildscript {
         google()
         jcenter()
         maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.0-rc-57"
+        classpath "com.gradle:build-scan-plugin:1.16"
     }
 }
+
+apply plugin: "com.gradle.build-scan"
 
 allprojects {
     repositories {
@@ -20,6 +24,7 @@ allprojects {
     }
 }
 
-repositories {
-    mavenCentral()
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
 }
