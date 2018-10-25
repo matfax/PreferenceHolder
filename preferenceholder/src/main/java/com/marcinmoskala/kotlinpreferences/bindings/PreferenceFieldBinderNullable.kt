@@ -8,7 +8,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-internal class PreferenceFieldBinderNullable<T : Any>(
+internal open class PreferenceFieldBinderNullable<T : Any>(
         private val clazz: KClass<T>,
         private val type: Type,
         private val key: String?,
@@ -49,7 +49,7 @@ internal class PreferenceFieldBinderNullable<T : Any>(
         }
     }
 
-    private fun saveNewValue(property: KProperty<*>, value: T?) {
+    protected open fun saveNewValue(property: KProperty<*>, value: T?) {
         if (value == null) {
             removeValue(property)
         } else {
@@ -64,14 +64,14 @@ internal class PreferenceFieldBinderNullable<T : Any>(
         return pref.getFromPreference(clazz, type, key)
     }
 
-    private fun removeValue(property: KProperty<*>) {
+    protected fun removeValue(property: KProperty<*>) {
         val pref = getPreferences()
         pref.edit()
                 .remove(getKey(key, property))
                 .apply()
     }
 
-    private fun saveValue(property: KProperty<*>, value: T) {
+    protected fun saveValue(property: KProperty<*>, value: T) {
         val pref = getPreferences()
         pref.edit().apply { putValue(clazz, value, getKey(key, property)) }.apply()
     }
