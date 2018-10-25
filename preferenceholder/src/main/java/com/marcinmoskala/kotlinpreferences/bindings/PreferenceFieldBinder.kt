@@ -16,7 +16,7 @@ internal class PreferenceFieldBinder<T : Any>(
         override val default: T,
         private val key: String?,
         private val getKey: (key: String?, property: KProperty<*>) -> String
-) : PreferenceField<T>(clazz, type, key, getKey), ReadWriteProperty<PreferenceHolder, T> {
+) : PreferenceField<T>(key, getKey), ReadWriteProperty<PreferenceHolder, T> {
 
     override fun refreshField(changedPref: SharedPreferences, changedKey: String): T? {
         return changedPref.getFromPreference(clazz, type, default, changedKey) as T

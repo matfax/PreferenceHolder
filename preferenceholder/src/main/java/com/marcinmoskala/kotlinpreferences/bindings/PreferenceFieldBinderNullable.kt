@@ -14,7 +14,7 @@ internal class PreferenceFieldBinderNullable<T : Any>(
         private val type: Type,
         private val key: String?,
         private val getKey: (key: String?, property: KProperty<*>) -> String
-) : PreferenceField<T>(clazz, type, key, getKey), ReadWriteProperty<PreferenceHolder, T?> {
+) : PreferenceField<T>(key, getKey), ReadWriteProperty<PreferenceHolder, T?> {
 
     override operator fun getValue(thisRef: PreferenceHolder, property: KProperty<*>): T? {
         return readValue(property)

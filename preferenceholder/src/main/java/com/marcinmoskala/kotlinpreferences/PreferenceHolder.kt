@@ -84,7 +84,7 @@ abstract class PreferenceHolder {
      * Converts a camelCase string to snake_case.
      */
     protected fun String.toSnakeCase(): String {
-        var text: String = ""
+        var text = ""
         var isFirst = true
         this.forEach {
             if (it.isUpperCase()) {
@@ -136,25 +136,6 @@ abstract class PreferenceHolder {
          *  This property should be used to set serializer to use types that are not supported by SharedPreference.
          */
         var serializer: Serializer? = null
-
-        /**
-         *  When testing mode is turned on, then there is no need to provide Context, and all bindings
-         *  are acting just like standard Kotln fields. If we then need to mock some situation then all
-         *  we need to do is to set values on Preferences. Example:
-         *
-         *  fun newUserCreationTest() {
-         *      PreferenceHolder.testingMode = true
-         *      UserPreferences.user = null
-         *      val mockedView = object : UserView {
-         *         fun getName() = "Marcin"
-         *         gun getSurname() = "Moskala"
-         *      }
-         *      val presenter = UserPresenter(mockedView)
-         *      presenter.createUser()
-         *      assert(User("Marcin", "Moskala"), UserPreferences.user)
-         *  }
-         */
-        var testingMode: Boolean = false
 
         /**
          *  It should be used to set ApplicationContext on project Application class. Only case when

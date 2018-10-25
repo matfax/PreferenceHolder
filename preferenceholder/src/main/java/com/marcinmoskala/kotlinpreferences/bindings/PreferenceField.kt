@@ -5,22 +5,17 @@ import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.newCoroutineContext
 import kotlinx.coroutines.runBlocking
-import java.lang.reflect.Type
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 internal abstract class PreferenceField<T : Any>(
-        private val clazz: KClass<T>,
-        private val type: Type,
         private val key: String?,
         private val getKey: (key: String?, property: KProperty<*>) -> String
 ) : Clearable, CoroutineScope {
 
-    override val coroutineContext = newCoroutineContext(EmptyCoroutineContext)
+    override val coroutineContext = Dispatchers.Main
 
     protected val pref by lazy { PreferenceHolder.getPreferences() }
 
