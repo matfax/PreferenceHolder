@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.marcinmoskala.kotlinpreferences.bindings.Clearable
 import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinder
-import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinderCaching
 import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinderNullable
-import com.marcinmoskala.kotlinpreferences.bindings.PreferenceFieldBinderNullableCaching
 import java.lang.reflect.Type
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KClass
@@ -20,40 +18,29 @@ abstract class PreferenceHolder {
 
     protected inline fun <reified T : Any> bindToPreferenceField(
             default: T,
-            key: String? = null,
-            caching: Boolean = true
+            key: String? = null
     ): ReadWriteProperty<PreferenceHolder, T> = bindToPreferenceField(
             T::class,
             object : TypeToken<T>() {}.type,
             default,
-            key,
-            caching
+            key
     )
 
     protected inline fun <reified T : Any> bindToPreferenceFieldNullable(
-            key: String? = null,
-            caching: Boolean = true
+            key: String? = null
     ): ReadWriteProperty<PreferenceHolder, T?> = bindToPreferenceFieldNullable(
             T::class,
             object : TypeToken<T>() {}.type,
-            key,
-            caching
+            key
     )
 
     protected fun <T : Any> bindToPreferenceField(
             clazz: KClass<T>,
             type: Type,
             default: T,
-            key: String?,
-            caching: Boolean = true
+            key: String?
     ): ReadWriteProperty<PreferenceHolder, T> {
-        return if (caching) PreferenceFieldBinderCaching(
-                clazz,
-                type,
-                default,
-                key,
-                ::getKeyFromProperty
-        ) else PreferenceFieldBinder(
+        return PreferenceFieldBinder(
                 clazz,
                 type,
                 default,
@@ -65,15 +52,9 @@ abstract class PreferenceHolder {
     protected fun <T : Any> bindToPreferenceFieldNullable(
             clazz: KClass<T>,
             type: Type,
-            key: String?,
-            caching: Boolean = true
+            key: String?
     ): ReadWriteProperty<PreferenceHolder, T?> {
-        return if (caching) PreferenceFieldBinderNullableCaching(
-                clazz,
-                type,
-                key,
-                ::getKeyFromProperty
-        ) else PreferenceFieldBinderNullable(
+        return PreferenceFieldBinderNullable(
                 clazz,
                 type,
                 key,

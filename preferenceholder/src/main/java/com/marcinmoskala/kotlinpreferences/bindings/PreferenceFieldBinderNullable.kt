@@ -1,78 +1,61 @@
 package com.marcinmoskala.kotlinpreferences.bindings
 
+import android.content.SharedPreferences
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
-import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.getPreferences
-import com.marcinmoskala.kotlinpreferences.PreferenceHolder.Companion.testingMode
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-internal open class PreferenceFieldBinderNullable<T : Any>(
+internal class PreferenceFieldBinderNullable<T : Any>(
         private val clazz: KClass<T>,
         private val type: Type,
         private val key: String?,
         private val getKey: (key: String?, property: KProperty<*>) -> String
-) : ReadWriteProperty<PreferenceHolder, T?>, Clearable {
+) : PreferenceField<T>(clazz, type, key, getKey), ReadWriteProperty<PreferenceHolder, T?> {
 
-    override fun clear(thisRef: PreferenceHolder, property: KProperty<*>) {
-        setValue(thisRef, property, null)
-    }
-
-    override fun clearCache() {
-        propertySet = false
-        field = null
-    }
-
-    var propertySet: Boolean = false
-    var field: T? = null
-
-    override operator fun getValue(thisRef: PreferenceHolder, property: KProperty<*>): T? = when {
-        testingMode -> field
-        else -> readAndSetValue(property)
-    }
-
-    private fun readAndSetValue(property: KProperty<*>): T? {
-        val newValue = readValue(property)
-        field = newValue
-        propertySet = true
-        return newValue
+    override operator fun getValue(thisRef: PreferenceHolder, property: KProperty<*>): T? {
+        return readValue(property)
     }
 
     override fun setValue(thisRef: PreferenceHolder, property: KProperty<*>, value: T?) {
-        if (testingMode) {
-            propertySet = true
-            if (value == field) return
-            field = value
-        } else {
-            saveNewValue(property, value)
+        field = async { value }
+        launch {
+            if (value == null) {
+                removeValue(property)
+            } else {
+                saveNewValue(property, value)
+            }
         }
     }
 
-    protected open fun saveNewValue(property: KProperty<*>, value: T?) {
-        if (value == null) {
-            removeValue(property)
-        } else {
-            saveValue(property, value)
-        }
+    override fun clear(thisRef: PreferenceHolder, property: KProperty<*>) {
+        setValue(thisRef, property, default)
     }
 
-    private fun readValue(property: KProperty<*>): T? {
-        val key = getKey(key, property)
-        val pref = getPreferences()
-        if (!pref.contains(key)) return null
-        return pref.getFromPreference(clazz, type, key)
-    }
-
-    protected fun removeValue(property: KProperty<*>) {
-        val pref = getPreferences()
-        pref.edit()
-                .remove(getKey(key, property))
-                .apply()
-    }
-
-    protected fun saveValue(property: KProperty<*>, value: T) {
-        val pref = getPreferences()
+    override fun saveNewValue(property: KProperty<*>, value: T) {
+        val pref = PreferenceHolder.getPreferences()
         pref.edit().apply { putValue(clazz, value, getKey(key, property)) }.apply()
     }
+
+    override fun refreshField(changedPref: SharedPreferences, changedKey: String): T? {
+        return if (changedPref.contains(changedKey)) {
+            changedPref.getFromPreference(clazz, type, changedKey) as T
+        } else {
+            null
+        }
+    }
+
+    override fun getFromPreference(property: KProperty<*>): T {
+        val key = getKey(key, property)
+        return pref.getFromPreference(clazz, type, key) as T
+    }
+
+    private fun removeValue(property: KProperty<*>) {
+        val propertyKey = getKey(key, property)
+        pref.edit().remove(propertyKey).apply()
+    }
+
 }

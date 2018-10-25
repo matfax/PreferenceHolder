@@ -36,7 +36,9 @@ private fun <T: Any> String.deserialize(type: Type): T? = getSerializer().deseri
 
 private fun <T> T.serialize() = getSerializer().serialize(this)
 
-private fun getSerializer() = PreferenceHolder.serializer ?: throw Error(Errors.serializerNotSet)
+internal class SerializerNotSetException : Exception("Serializer needs to be set if you want to use custom types")
+
+private fun getSerializer() = PreferenceHolder.serializer ?: throw SerializerNotSetException()
 
 private fun <T: Any> getDefault(clazz: KClass<T>): T? = when(clazz.simpleName) {
     "Long" -> -1L
