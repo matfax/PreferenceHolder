@@ -1,6 +1,7 @@
 package com.marcinmoskala.testapp
 
 import androidx.test.InstrumentationRegistry
+import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.testapp.TestPreferences.canEatPie
@@ -23,7 +24,8 @@ class DefaultChangeTest {
         testBoolean(TestPreferences::canEatPie)
     }
 
-    private fun testBoolean(property: KMutableProperty0<Boolean>) {
+    @Test
+    fun testBoolean(property: KMutableProperty0<Boolean>) {
         assertTrue(property.get())
         property.set(false)
         canEatPie = false

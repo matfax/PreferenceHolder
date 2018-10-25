@@ -3,7 +3,16 @@ package com.marcinmoskala.kotlinpreferences.collections
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.kotlinpreferences.objects.Character
 
-object CollectionsPref: PreferenceHolder() {
+object CollectionsConfig: PreferenceHolder() {
+
+    enum class Elems {
+        Elem1,
+        Elem2,
+        Elem3,
+        Elem4,
+        Elem5
+    }
+
     var intList: List<Int>? by bindToPreferenceFieldNullable()
 
     var stringList: List<String> by bindToPreferenceField(listOf())
@@ -11,14 +20,4 @@ object CollectionsPref: PreferenceHolder() {
 
     var propTest: List<Character>? by bindToPreferenceFieldNullable()
     var elemTest: Set<Elems> by bindToPreferenceField(setOf(Elems.Elem1, Elems.Elem3))
-
-    var multiLevelList: List<List<Int>>? by bindToPreferenceFieldNullable()
-}
-
-enum class Elems {
-    Elem1,
-    Elem2,
-    Elem3,
-    Elem4,
-    Elem5
 }

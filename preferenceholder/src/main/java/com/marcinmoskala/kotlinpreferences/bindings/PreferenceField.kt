@@ -26,7 +26,7 @@ internal abstract class PreferenceField<T : Any>(
 
     init {
         pref.registerOnSharedPreferenceChangeListener { changedPref, changedKey ->
-            field = async(start = CoroutineStart.LAZY) {
+            field = async {
                 refreshField(changedPref, changedKey)
             }
         }

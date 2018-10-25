@@ -17,6 +17,13 @@ buildscript {
 apply plugin: "com.gradle.build-scan"
 
 allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force 'com.android.support:support-annotations:28.0.0'
+            force 'androidx.annotation:annotation:1.0.0'
+        }
+    }
+
     repositories {
         google()
         jcenter()

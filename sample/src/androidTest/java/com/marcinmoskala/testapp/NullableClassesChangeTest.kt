@@ -21,18 +21,18 @@ class NullableClassesChangeTest {
     @Test
     fun characterTest() {
         assertNull(character)
-        character = Character("Marcin", "Human", "Wizzard")
-        assertEquals(Character("Marcin", "Human", "Wizzard"), character!!)
+        character = Character("Marcin", "Human", "Wizard")
+        assertEquals(Character("Marcin", "Human", "Wizard"), character!!)
         character = character!!.copy(race = "SuperHuman")
         assertEquals("SuperHuman", character!!.race)
-        assertEquals(Character("Marcin", "SuperHuman", "Wizzard"), character!!)
+        assertEquals(Character("Marcin", "SuperHuman", "Wizard"), character!!)
     }
 
     @Test
     fun bigObjectTest() {
         assertNull(savedGame)
-        savedGame = Game(Character("Marcin", "Human", "Wizzard"), GameMode.Hard, 100)
-        assertEquals(Character("Marcin", "Human", "Wizzard"), savedGame!!.character)
+        savedGame = Game(Character("Marcin", "Human", "Wizard"), GameMode.Hard, 100)
+        assertEquals(Character("Marcin", "Human", "Wizard"), savedGame!!.character)
         assertEquals(GameMode.Hard, savedGame!!.gameMode)
         assertEquals(100, savedGame!!.level)
     }

@@ -1,6 +1,11 @@
 package com.marcinmoskala.testapp
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.textEditView
+import kotlinx.android.synthetic.main.activity_main.numberEditView
+import kotlinx.android.synthetic.main.activity_main.saveObjectButton
+import kotlinx.android.synthetic.main.activity_main.objectMonitor
 
 class MainActivity : AppCompatActivity() {
 

@@ -11,14 +11,14 @@ class ObjectsTest: GsonBaseTest() {
 
     @Test
     fun characterTest() {
-        val character1 = Character("Marcin", "Human", "Wizzard")
-        val character2 = Character("Marcin", "SuperHuman", "Wizzard")
+        val character1 = Character("Marcin", "Human", "Wizard")
+        val character2 = Character("Marcin", "SuperHuman", "Wizard")
         testValues(ComplexTestPreferences::character, null, character1, character2)
     }
 
     @Test
     fun bigObjectTest() {
-        val game1 = Game(Character("Marcin", "Human", "Wizzard"), GameMode.Hard, 100)
+        val game1 = Game(Character("Marcin", "Human", "Wizard"), GameMode.Hard, 100)
         testValues(ComplexTestPreferences::savedGame, null, game1)
     }
 }
