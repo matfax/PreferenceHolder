@@ -3,7 +3,6 @@ package com.marcinmoskala.kotlinpreferences.bindings
 import android.content.SharedPreferences
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -42,7 +41,7 @@ internal abstract class PreferenceField<T : Any>(
 
     protected fun readValue(property: KProperty<*>): T? {
         val propertyKey = getKey(key, property)
-        if (field == default) {
+        if (field == null) {
             field = if (!pref.contains(propertyKey)) {
                 async { default }
             } else {

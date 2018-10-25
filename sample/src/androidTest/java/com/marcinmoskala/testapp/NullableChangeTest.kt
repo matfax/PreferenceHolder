@@ -1,29 +1,27 @@
 package com.marcinmoskala.testapp
 
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.testapp.TestPreferences.className
 import com.marcinmoskala.testapp.TestPreferences.experience
 import com.marcinmoskala.testapp.TestPreferences.isMonsterKiller
 import com.marcinmoskala.testapp.TestPreferences.monstersKilled
 import com.marcinmoskala.testapp.TestPreferences.numberOfHahaInLough
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
+import junit.framework.TestCase
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class NullableChangeTest {
+class NullableChangeTest : TestCase() {
 
     init {
-        PreferenceHolder.setContext(InstrumentationRegistry.getTargetContext())
+        PreferenceHolder.setContext(InstrumentationRegistry.getInstrumentation().targetContext)
         TestPreferences.clear()
     }
 
     @Test
-    fun booleanDefaultChangeTest() {
+    fun testBooleanDefaultChange() {
         assertNull(isMonsterKiller)
         isMonsterKiller = true
         assertTrue(isMonsterKiller!!)
@@ -34,7 +32,7 @@ class NullableChangeTest {
     }
 
     @Test
-    fun intDefaultChangeTest() {
+    fun testIntDefaultChange() {
         assertNull(monstersKilled)
         monstersKilled = 1
         assertEquals(1, monstersKilled!!)
@@ -46,7 +44,7 @@ class NullableChangeTest {
     }
 
     @Test
-    fun longDefaultChangeTest() {
+    fun testLongDefaultChange() {
         assertNull(numberOfHahaInLough)
         numberOfHahaInLough = 10
         assertEquals(10, numberOfHahaInLough!!)
@@ -57,7 +55,7 @@ class NullableChangeTest {
     }
 
     @Test
-    fun floatDefaultChangeTest() {
+    fun testFloatDefaultChange() {
         assertNull(experience)
         experience = 0.0F
         assertEquals(0.0F, experience!!)
@@ -69,7 +67,7 @@ class NullableChangeTest {
     }
 
     @Test
-    fun stringDefaultChangeTest() {
+    fun testStringDefaultChange() {
         assertNull(className)
         className = "Rouge"
         assertEquals("Rouge", className!!)

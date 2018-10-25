@@ -1,26 +1,24 @@
 package com.marcinmoskala.testapp
 
-import androidx.test.InstrumentationRegistry
-import androidx.test.filters.LargeTest
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.testapp.TestPreferences.canEatPie
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import junit.framework.TestCase
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.reflect.KMutableProperty0
 
 @RunWith(AndroidJUnit4::class)
-class DefaultChangeTest {
+class DefaultChangeTest : TestCase() {
 
     init {
-        PreferenceHolder.setContext(InstrumentationRegistry.getTargetContext())
+        PreferenceHolder.setContext(InstrumentationRegistry.getInstrumentation().targetContext)
         TestPreferences.clear()
     }
 
     @Test
-    fun booleanDefaultChangeTest() {
+    fun testBooleanDefaultChange() {
         testBoolean(TestPreferences::canEatPie)
     }
 
@@ -35,7 +33,7 @@ class DefaultChangeTest {
     }
 
     @Test
-    fun intDefaultChangeTest() {
+    fun testIntDefaultChange() {
         assertEquals(0, TestPreferences.pieBaked)
         TestPreferences.pieBaked = 10
         assertEquals(10, TestPreferences.pieBaked)
@@ -44,7 +42,7 @@ class DefaultChangeTest {
     }
 
     @Test
-    fun longDefaultChangeTest() {
+    fun testLongDefaultChange() {
         assertEquals(0L, TestPreferences.allPieInTheWorld)
         TestPreferences.allPieInTheWorld = 10
         assertEquals(10L, TestPreferences.allPieInTheWorld)
@@ -53,7 +51,7 @@ class DefaultChangeTest {
     }
 
     @Test
-    fun floatDefaultChangeTest() {
+    fun testFloatDefaultChange() {
         assertEquals(0F, TestPreferences.pieEaten)
         for (i in 1..10) TestPreferences.pieEaten += 1F
         assertEquals(10F, TestPreferences.pieEaten)
@@ -62,7 +60,7 @@ class DefaultChangeTest {
     }
 
     @Test
-    fun stringDefaultChangeTest() {
+    fun testStringDefaultChange() {
         assertEquals("Pie", TestPreferences.bestPieName)
         TestPreferences.bestPieName = "BlueberryPie"
         assertEquals("BlueberryPie", TestPreferences.bestPieName)
