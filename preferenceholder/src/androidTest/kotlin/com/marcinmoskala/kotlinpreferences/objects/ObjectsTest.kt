@@ -18,7 +18,11 @@ class ObjectsTest : BaseTest() {
 
     @Test
     fun bigObjectTest() {
-        val game1 = Game(Character("Marcin", "Human", "Wizard"), GameMode.Hard, 100)
+        val game1 = Game(
+                Character("Marcin", "Human", "Wizard"),
+                GameMode.Hard,
+                100
+        )
         testValues(ComplexTestPreferences::savedGame, null, game1)
     }
 }

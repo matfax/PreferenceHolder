@@ -38,7 +38,7 @@ internal fun <T : Any> SharedPreferences.getFromPreference(
         clazz.isSubclassOf(String::class) -> getString(key, default as String)
         clazz.isSubclassOf(Boolean::class) -> getBoolean(key, default as Boolean)
         clazz.isSubclassOf(Float::class) -> getFloat(key, default as Float)
-        else -> getString(key, serializedDefault)?.let { JSON.parse(clazz.serializer(), it) }
+        else -> getString(key, serializedDefault)?.let { JSON.nonstrict.parse(clazz.serializer(), it) }
     } as? T?
 }
 

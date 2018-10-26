@@ -9,14 +9,22 @@ import com.marcinmoskala.testapp.TestPreferences.isMonsterKiller
 import com.marcinmoskala.testapp.TestPreferences.monstersKilled
 import com.marcinmoskala.testapp.TestPreferences.numberOfHahaInLough
 import junit.framework.TestCase
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class NullableChangeTest : TestCase() {
 
-    init {
+    @Before
+    fun before() {
         PreferenceHolder.setContext(InstrumentationRegistry.getInstrumentation().targetContext)
+        TestPreferences.clear()
+    }
+
+    @After
+    fun after() {
         TestPreferences.clear()
     }
 

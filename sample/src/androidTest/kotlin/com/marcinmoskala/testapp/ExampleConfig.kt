@@ -3,7 +3,6 @@ package com.marcinmoskala.testapp
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import kotlinx.serialization.Serializable
 
-@Serializable
 object TestPreferences: PreferenceHolder() {
     var canEatPie: Boolean by bindToPreferenceField(true)
     var pieBaked: Int by bindToPreferenceField(0)

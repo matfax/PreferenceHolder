@@ -6,14 +6,22 @@ import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.testapp.ComplexTestPreferences.character
 import com.marcinmoskala.testapp.ComplexTestPreferences.savedGame
 import junit.framework.TestCase
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class NullableClassesChangeTest : TestCase() {
 
-    init {
+    @Before
+    fun before() {
         PreferenceHolder.setContext(InstrumentationRegistry.getInstrumentation().targetContext)
+        ComplexTestPreferences.clear()
+    }
+
+    @After
+    fun after() {
         ComplexTestPreferences.clear()
     }
 

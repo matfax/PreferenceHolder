@@ -5,15 +5,23 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.marcinmoskala.kotlinpreferences.PreferenceHolder
 import com.marcinmoskala.testapp.TestPreferences.canEatPie
 import junit.framework.TestCase
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.KMutableProperty0
 
 @RunWith(AndroidJUnit4::class)
-class DefaultChangeTest : TestCase() {
+abstract class DefaultChangeTest : TestCase() {
 
-    init {
+    @Before
+    fun before() {
         PreferenceHolder.setContext(InstrumentationRegistry.getInstrumentation().targetContext)
+        TestPreferences.clear()
+    }
+
+    @After
+    fun after() {
         TestPreferences.clear()
     }
 
@@ -23,9 +31,9 @@ class DefaultChangeTest : TestCase() {
     }
 
     @Test
-    fun testBoolean(property: KMutableProperty1<TestPreferences, Boolean>) {
-        assertTrue(property.get(TestPreferences))
-        property.set(TestPreferences, false)
+    fun testBoolean(property: KMutableProperty0<Boolean>) {
+        assertTrue(property.get())
+        property.set(false)
         canEatPie = false
         assertTrue(!canEatPie)
         canEatPie = true
