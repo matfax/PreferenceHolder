@@ -27,9 +27,7 @@ env:
   matrix:
     - JOB="build --scan"
     - JOB=:preferenceholder:connectedDebugAndroidTest
-    - JOB=:preferenceholder-gson-serializer:connectedDebugAndroidTest
     - JOB=:sample:connectedDebugAndroidTest
-
 
 script:
   - ./gradlew $JOB -i
