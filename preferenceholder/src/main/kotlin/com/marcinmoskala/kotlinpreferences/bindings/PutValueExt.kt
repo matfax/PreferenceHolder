@@ -25,8 +25,8 @@ internal fun <T : Any> SharedPreferences.Editor.putValue(
 
 internal fun <T : Any> SharedPreferences.getFromPreference(
         clazz: KClass<T>,
-        default: T?,
-        key: String
+        key: String,
+        default: T? = getDefault(clazz)
 ): T? {
     val serializedDefault: String? by lazy {
         default?.let { JSON.stringify(clazz.serializer(), it) }
@@ -38,15 +38,8 @@ internal fun <T : Any> SharedPreferences.getFromPreference(
         clazz.isSubclassOf(String::class) -> getString(key, default as String)
         clazz.isSubclassOf(Boolean::class) -> getBoolean(key, default as Boolean)
         clazz.isSubclassOf(Float::class) -> getFloat(key, default as Float)
-        else -> getString(key, serializedDefault)?.let { JSON.nonstrict.parse(clazz.serializer(), it) }
+        else -> getString(key, serializedDefault)?.let { JSON.parse(clazz.serializer(), it) }
     } as? T?
-}
-
-internal fun <T : Any> SharedPreferences.getFromPreference(
-        clazz: KClass<T>,
-        key: String
-): T? {
-    return getFromPreference(clazz, getDefault(clazz), key)
 }
 
 private fun <T : Any> getDefault(clazz: KClass<T>): T? = when {

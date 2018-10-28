@@ -17,7 +17,7 @@ internal class PreferenceFieldBinder<T : Any>(
 ) : PreferenceField<T>(key, getKey), ReadWriteProperty<PreferenceHolder, T> {
 
     override fun refreshField(changedPref: SharedPreferences, changedKey: String): T? {
-        return changedPref.getFromPreference(clazz, default, changedKey)
+        return changedPref.getFromPreference(clazz, changedKey, default)
     }
 
     override operator fun getValue(thisRef: PreferenceHolder, property: KProperty<*>): T {
@@ -42,7 +42,7 @@ internal class PreferenceFieldBinder<T : Any>(
 
     override fun getFromPreference(property: KProperty<*>): T {
         val key = getKey(key, property)
-        return pref.getFromPreference(clazz, default, key) as T
+        return pref.getFromPreference(clazz, key, default) as T
     }
 
 }
