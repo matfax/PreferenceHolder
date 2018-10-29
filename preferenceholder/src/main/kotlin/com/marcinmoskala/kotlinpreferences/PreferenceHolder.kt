@@ -76,7 +76,7 @@ abstract class PreferenceHolder {
     /**
      * Converts a camelCase string to snake_case.
      */
-    protected fun String.toSnakeCase(): String {
+    private fun String.toSnakeCase(): String {
         var text = ""
         var isFirst = true
         this.forEach {
