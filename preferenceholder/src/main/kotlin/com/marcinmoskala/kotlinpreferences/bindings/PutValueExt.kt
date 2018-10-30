@@ -3,11 +3,13 @@
 package com.marcinmoskala.kotlinpreferences.bindings
 
 import android.content.SharedPreferences
+import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.json.JSON
 import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
+@ImplicitReflectionSerializer
 internal fun <T : Any> SharedPreferences.Editor.putValue(
         clazz: KClass<T>,
         value: T,
@@ -23,6 +25,7 @@ internal fun <T : Any> SharedPreferences.Editor.putValue(
     }
 }
 
+@ImplicitReflectionSerializer
 internal fun <T : Any> SharedPreferences.getFromPreference(
         clazz: KClass<T>,
         key: String,
