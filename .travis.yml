@@ -7,9 +7,9 @@ android:
     - platform-tools
     - build-tools-28.0.3
     - android-28
-    - android-22
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-22
+    - extra-google-m2repository
+    - sys-img-x86-android-28
 
 jdk:
   - oraclejdk8
@@ -17,9 +17,11 @@ jdk:
 sudo: true
 
 before_script:
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - android list targets
+  - echo no | android create avd --force -n test -t android-28 --abi x86 -no-accel
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
+  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - sleep 10
   - adb shell input keyevent 82
 
