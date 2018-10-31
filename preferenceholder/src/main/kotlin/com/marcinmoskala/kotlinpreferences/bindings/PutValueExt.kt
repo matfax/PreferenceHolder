@@ -9,7 +9,7 @@ import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
-@ImplicitReflectionSerializer
+@UseExperimental(ImplicitReflectionSerializer::class)
 internal fun <T : Any> SharedPreferences.Editor.putValue(
         clazz: KClass<T>,
         value: T,
@@ -25,7 +25,7 @@ internal fun <T : Any> SharedPreferences.Editor.putValue(
     }
 }
 
-@ImplicitReflectionSerializer
+@UseExperimental(ImplicitReflectionSerializer::class)
 internal fun <T : Any> SharedPreferences.getFromPreference(
         clazz: KClass<T>,
         key: String,

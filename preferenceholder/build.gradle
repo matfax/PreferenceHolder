@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'kotlinx-serialization'
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    kotlinOptions.freeCompilerArgs += ['-Xuse-experimental=kotlin.Experimental']
+}
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
