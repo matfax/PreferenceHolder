@@ -20,6 +20,7 @@ internal class PreferenceFieldBinderNullable<T : Any>(
 
     override fun setValue(thisRef: PreferenceHolder, property: KProperty<*>, value: T?) {
         field = async { value }
+
         launch {
             if (value == null) {
                 removeValue(property)
@@ -46,9 +47,13 @@ internal class PreferenceFieldBinderNullable<T : Any>(
         }
     }
 
-    override fun getFromPreference(property: KProperty<*>): T {
-        val key = getKey(key, property)
-        return pref.getFromPreference(clazz, key) as T
+    override fun getFromPreference(property: KProperty<*>): T? {
+        val propertyKey = getKey(key, property)
+        return if (pref.contains(propertyKey)) {
+            pref.getFromPreference(clazz, propertyKey) as T
+        } else {
+            default
+        }
     }
 
     private fun removeValue(property: KProperty<*>) {

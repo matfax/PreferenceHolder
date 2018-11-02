@@ -46,10 +46,10 @@ internal fun <T : Any> SharedPreferences.getFromPreference(
 }
 
 private fun <T : Any> getDefault(clazz: KClass<T>): T? = when {
-    clazz.isSubclassOf(Long::class) -> -1L
-    clazz.isSubclassOf(Int::class) -> -1
+    clazz.isSubclassOf(Long::class) -> 0L
+    clazz.isSubclassOf(Int::class) -> 0
     clazz.isSubclassOf(String::class) -> ""
     clazz.isSubclassOf(Boolean::class) -> false
-    clazz.isSubclassOf(Float::class) -> -1.0F
+    clazz.isSubclassOf(Float::class) -> 0.0F
     else -> null
 } as? T?

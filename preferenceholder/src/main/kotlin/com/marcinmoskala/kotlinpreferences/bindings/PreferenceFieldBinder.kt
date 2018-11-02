@@ -36,13 +36,19 @@ internal class PreferenceFieldBinder<T : Any>(
     }
 
     override fun saveNewValue(property: KProperty<*>, value: T) {
+        val propertyKey = getKey(key, property)
         val pref = getPreferences()
-        pref.edit().apply { putValue(clazz, value, getKey(key, property)) }.apply()
+        pref.edit().apply { putValue(clazz, value, propertyKey) }.apply()
     }
 
-    override fun getFromPreference(property: KProperty<*>): T {
-        val key = getKey(key, property)
-        return pref.getFromPreference(clazz, key, default) as T
+    override fun getFromPreference(property: KProperty<*>): T? {
+        val propertyKey = getKey(key, property)
+        return if (pref.contains(propertyKey)) {
+            pref.getFromPreference(clazz, propertyKey, default) as T
+        } else {
+            saveNewValue(property, default)
+            default
+        }
     }
 
 }

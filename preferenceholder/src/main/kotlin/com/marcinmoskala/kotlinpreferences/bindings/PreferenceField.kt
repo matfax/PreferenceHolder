@@ -40,17 +40,14 @@ internal abstract class PreferenceField<T : Any>(
     protected abstract fun saveNewValue(property: KProperty<*>, value: T)
 
     protected fun readValue(property: KProperty<*>): T? {
-        val propertyKey = getKey(key, property)
-        if (field == null) {
-            field = if (pref.contains(propertyKey)) {
-                async { getFromPreference(property) }
-            } else {
-                async { default }
-            }
+        field = if (field == null) {
+            async { getFromPreference(property) }
+        } else {
+            field
         }
         return runBlocking { field?.await() }
     }
 
-    protected abstract fun getFromPreference(property: KProperty<*>): T
+    protected abstract fun getFromPreference(property: KProperty<*>): T?
 
 }
