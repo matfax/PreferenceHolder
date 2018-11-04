@@ -11,5 +11,6 @@ fun <T> testValues(property: KMutableProperty0<T>, start: T?, vararg values: T) 
         Assert.assertEquals(it, property.get())
         ExampleConfig.clearCache()
         ComplexTestPreferences.clearCache()
+        Assert.assertEquals(it, property.get())
     }
 }
