@@ -31,7 +31,7 @@ env:
     - JOB=:sample:connectedDebugAndroidTest
 
 script:
-  - ./gradlew $JOB -i
+  - ./gradlew --stacktrace $JOB -i
 
 branches:
   only:
