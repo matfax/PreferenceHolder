@@ -9,6 +9,8 @@ import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
+class FieldTypeMappingException(msg: String, thr: Throwable) : RuntimeException(msg, thr)
+
 @UseExperimental(ImplicitReflectionSerializer::class)
 internal fun <T : Any> SharedPreferences.Editor.putValue(
         clazz: KClass<T>,
@@ -24,7 +26,12 @@ internal fun <T : Any> SharedPreferences.Editor.putValue(
             clazz.isSubclassOf(Float::class) -> putFloat(key, value as Float)
             else -> putString(key, JSON.stringify(clazz.serializer(), value))
         }
-    }.onFailure { throw Exception("Invalid type mapping for key '$key': $value", it) }
+    }.onFailure {
+        throw FieldTypeMappingException(
+                "Invalid type mapping for key '$key': $value",
+                it
+        )
+    }
 }
 
 @UseExperimental(ImplicitReflectionSerializer::class)
@@ -47,7 +54,7 @@ internal fun <T : Any> SharedPreferences.getFromPreference(
             else -> getString(key, serializedDefault)?.let { JSON.parse(clazz.serializer(), it) }
         } as? T?
     }.getOrElse {
-        throw Exception(
+        throw FieldTypeMappingException(
                 "Invalid type mapping for key '$key': ${getString(key, serializedDefault)}",
                 it
         )
