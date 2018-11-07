@@ -15,14 +15,16 @@ internal fun <T : Any> SharedPreferences.Editor.putValue(
         value: T,
         key: String
 ) {
-    when {
-        clazz.isSubclassOf(Long::class) -> putLong(key, value as Long)
-        clazz.isSubclassOf(Int::class) -> putInt(key, value as Int)
-        clazz.isSubclassOf(String::class) -> putString(key, value as String)
-        clazz.isSubclassOf(Boolean::class) -> putBoolean(key, value as Boolean)
-        clazz.isSubclassOf(Float::class) -> putFloat(key, value as Float)
-        else -> putString(key, JSON.stringify(clazz.serializer(), value))
-    }
+    runCatching {
+        when {
+            clazz.isSubclassOf(Long::class) -> putLong(key, value as Long)
+            clazz.isSubclassOf(Int::class) -> putInt(key, value as Int)
+            clazz.isSubclassOf(String::class) -> putString(key, value as String)
+            clazz.isSubclassOf(Boolean::class) -> putBoolean(key, value as Boolean)
+            clazz.isSubclassOf(Float::class) -> putFloat(key, value as Float)
+            else -> putString(key, JSON.stringify(clazz.serializer(), value))
+        }
+    }.onFailure { throw Exception("Invalid type mapping for key '$key': $value", it) }
 }
 
 @UseExperimental(ImplicitReflectionSerializer::class)
@@ -44,7 +46,7 @@ internal fun <T : Any> SharedPreferences.getFromPreference(
             clazz.isSubclassOf(Float::class) -> getFloat(key, default as Float)
             else -> getString(key, serializedDefault)?.let { JSON.parse(clazz.serializer(), it) }
         } as? T?
-    }.getOrElse { throw Exception("Invalid type mapping: ${getString(key, serializedDefault)}", it) }
+    }.getOrElse { throw Exception("Invalid type mapping for key '$key': ${getString(key, serializedDefault)}", it) }
 }
 
 private fun <T : Any> getDefault(clazz: KClass<T>): T? = when {
