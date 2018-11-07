@@ -46,7 +46,12 @@ internal fun <T : Any> SharedPreferences.getFromPreference(
             clazz.isSubclassOf(Float::class) -> getFloat(key, default as Float)
             else -> getString(key, serializedDefault)?.let { JSON.parse(clazz.serializer(), it) }
         } as? T?
-    }.getOrElse { throw Exception("Invalid type mapping for key '$key': ${getString(key, serializedDefault)}", it) }
+    }.getOrElse {
+        throw Exception(
+                "Invalid type mapping for key '$key': ${getString(key, serializedDefault)}",
+                it
+        )
+    }
 }
 
 private fun <T : Any> getDefault(clazz: KClass<T>): T? = when {

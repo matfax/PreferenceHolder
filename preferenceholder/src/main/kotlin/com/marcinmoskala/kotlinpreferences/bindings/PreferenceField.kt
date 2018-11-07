@@ -25,8 +25,10 @@ internal abstract class PreferenceField<T : Any>(
 
     init {
         pref.registerOnSharedPreferenceChangeListener { changedPref, changedKey ->
-            field = async {
-                refreshField(changedPref, changedKey)
+            if (key == changedKey) {
+                field = async {
+                    refreshField(changedPref, changedKey)
+                }
             }
         }
     }
