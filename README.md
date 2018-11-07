@@ -1,4 +1,5 @@
 # async-preference-holder
+
 Kotlin Android Library, that makes preference usage simple and fun.
 
 [![](https://jitpack.io/v/matfax/async-preference-holder.svg)](https://jitpack.io/#matfax/async-preference-holder)
@@ -9,9 +10,19 @@ Kotlin Android Library, that makes preference usage simple and fun.
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/matfax/async-preference-holder.svg)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=matfax/async-preference-holder)](https://dependabot.com)
 
-To stay up-to-date with news about library [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40marcinmoskala)](https://twitter.com/marcinmoskala?ref_src=twsrc%5Etfw)
 
-This library is younger brother of [KotlinPreferences](https://github.com/MarcinMoskala/KotlinPreferences).
+This library is younger brother of [PreferenceHolder](https://github.com/MarcinMoskala/PreferenceHolder).
+
+## Where is the difference to the upstream brother `PreferenceHolder`?
+
+- This fork enables asynchronous access to the PreferenceHolder. Caching provides immediate access to the preferences.
+- It uses kotlinx serialization instead of Gson since it has become more and more adult.
+- It allows you to use your own `SharedPreferences` implemenatation, not just the default one provided by the given context.
+- It uses Kotlin 1.3.
+- The testing mode has been dropped.
+- Caching has become obligatory.
+
+## How to use
 
 With async-preference-holder, you can define different preference fields this way:
 
@@ -45,11 +56,6 @@ object UserPref: async-preference-holder() {
     // Any type can used if serializer is set. See: Gson serialization
     var character: Character? by bindToPreferenceFieldNullable()
     var savedGame: Game? by bindToPreferenceFieldNullable()
-
-    // Single level collections are also supported if serializer is set. See: Gson serialization
-    var longList: Map<Int, Long> by bindToPreferenceField(mapOf(0 to 12L, 10 to 143L))
-    var propTest: List<Character>? by bindToPropertyWithBackupNullable()
-    var elemTest: Set<Elems> by bindToPreferenceField(setOf(Elems.Elem1, Elems.Elem3))
 }
 ```
 
@@ -71,51 +77,34 @@ It it suggested to do it in project Application class. As an alternative, async-
 android:name="com.marcinmoskala.kotlinpreferences.async-preference-holderApplication"
 ```
 
-## Unit testing components
-
-Library also include test mode:
-
-```
-async-preference-holder.testingMode = true
-```
-
-When it is turned on, then all properties are acting just like normal properties without binding to preference field. This allows to make unit tests to presenters and to use cases that are using instance of async-preference-holder.
-
 ## Install
 
-To add async-preference-holder to the project, add to build.gradle file:
-
-```groovy
-dependencies {
-    implementation 'com.github.matfax:async-preference-holder:1.52-beta.6'
-}
-```
-
-While library is located on JitPack, remember to add to module build.gradle (unless you already have it):
+To add async-preference-holder to your project, add the dependency to your Gradle config.
 
 ```groovy
 repositories {
+    maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://jitpack.io' }
 }
-```
-
-## Gson serialization
-
-To use Gson serializer, we need to add following dependency:
-
-```groovy
 dependencies {
-    implementation "com.github.matfax:async-preference-holder:preferenceholder-gson-serializer:1.52-beta.6"
+    implementation 'com.github.matfax:async-preference-holder:1.53'
 }
 ```
 
-And specify `GsonSerializer` as `async-preference-holder` serializer: 
+## Kotlinx Serialization
 
-```kotlin
-async-preference-holder.serializer = GsonSerializer(Gson())
+To use the serializer, we need to enable the following plugin:
+
+```groovy
+buildscript {
+    repositories {
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+    }
+}
+apply plugin: 'kotlinx-serialization'
 ```
 
-Since then, we can use all types, even one not supported by SharedPreference (like custom objects `Character` and `Game`, or collections)
+LIMITATION: Serialization is still limited as described in [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
 ## Other libraries
 
@@ -128,6 +117,7 @@ If you like it, remember to leave the star and check out my other libraries:
 License
 -------
 
+    Copyright 2018 matfax
     Copyright 2017 Marcin Moskała
 
     Licensed under the Apache License, Version 2.0 (the "License");
